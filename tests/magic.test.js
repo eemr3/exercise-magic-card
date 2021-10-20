@@ -34,4 +34,3 @@ describe(' Testa a função getMagicCard', () => {
     ]);
   });
   
-});
