@@ -1,4 +1,5 @@
-const fetch = require('node-fetch');
+const fetch = require('node-fetch')
+const favoriteCards = require('../data/favoriteCards.js')
 
 const getMagicCardUrl = (cardId) => `https://api.magicthegathering.io/v1/cards/${cardId}`;
 
@@ -9,14 +10,13 @@ const getMagicCard = async (cardId) => {
   
   const { name, manaCost, types, subtypes, rarity } = json.card;
 
-  return {
+  favoriteCards.push({
     name,
     manaCost,
     types,
     subtypes,
     rarity,
-  }
-  
+  });
 };
 
 module.exports = {

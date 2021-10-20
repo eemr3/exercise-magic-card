@@ -1,29 +1,36 @@
-const magic = require("../src/magic.js");
-const { trybeSimulator } = require("../simulator/simulator.js");
+const { getMagicCard } = require('../src/magic.js');
+const favoriteCards = require('../data/favoriteCards.js');
 
-const expected = {
-  name: "Ancestor's Chosen",
-  manaCost: "{5}{W}{W}",
-  types: ["Creature"],
-  subtypes: ["Human", "Cleric"],
-  rarity: "Uncommon",
-};
+const retrievesFavoriteCards = () => {
+  // implemente sua função aqui
+  favoriteCards.splice(4, favoriteCards.length - 4);
+}
 
-describe(" Testa a função getMagicCard", () => {
-  it("Deve retornar um objeto com as propriedades esperadas", async () => {
-    const getMagicCardSimulator = trybeSimulator(magic, "getMagicCard");
-    const { name, manaCost, types, subtypes, rarity } =
-      await getMagicCardSimulator("130550");
+describe(' Testa a função getMagicCard', () => { 
+    afterEach(() => {
+      retrievesFavoriteCards();
+    });
 
-    expect.assertions(6);
-
+  it('Testa se um novo card é adicionado a cada execução', async () => {
+    expect.assertions(2);
+    await getMagicCard('130553');
+    
     // implemente seus testes aqui
-
-    expect({ name, manaCost, types, subtypes, rarity }).toEqual(expected);
-    expect(Array.isArray(types)).toBe(true);
-    expect(subtypes.length).toBe(2);
-    expect(rarity).toBe("Uncommon");
-    expect(name).toBe(`Ancestor's Chosen`);
-    expect(manaCost).toBe(`{5}{W}{W}`);
+    const lastPosition = favoriteCards.length - 1;
+    expect(favoriteCards.length).toBe(5);
+    expect(favoriteCards[lastPosition].name).toBe('Beacon of Immortality');
   });
-});
+
+  it('Deve retornar favoriteCards contendo apenas os cards favoritos iniciais', () => {
+    expect.assertions(2);
+    expect(favoriteCards).toHaveLength(4);
+    // implemente seus testes aqui
+    const nameFavoriteCards = favoriteCards.map((favoriteCard) => favoriteCard.name);
+    expect(nameFavoriteCards).toEqual([
+      "Ancestor's Chosen",
+      "Angel of Mercy",
+      "Aven Cloudchaser",
+      "Ballista Squad",
+    ]);
+  });
+  
